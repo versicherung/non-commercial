@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "stylelint": "stylelint 'src/**/*.less' 'src/**/*.css' --fix --cache"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.2",
@@ -37,7 +38,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "npm run eslint",
+      "npm run lint",
       "git add"
     ],
     "*.{css, less}": [
