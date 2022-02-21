@@ -19,7 +19,7 @@ const PageLayout: FC = ({ children }) => {
           [styles['layout-navbar-hidden']]: !showNavBar,
         })}
       >
-        <NavBar show={showNavBar} />
+        <NavBar />
       </div>
       {children}
     </Layout>

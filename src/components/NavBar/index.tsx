@@ -14,11 +14,7 @@ import IconButton from './components/IconButton';
 
 import styles from './index.module.less';
 
-interface Props {
-  show: boolean;
-}
-
-const NavBar: FC<Props> = ({ show }) => {
+const NavBar: FC = () => {
   const { theme, setTheme } = useGlobalContext();
 
   const droplist = (
