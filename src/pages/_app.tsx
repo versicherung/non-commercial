@@ -19,7 +19,6 @@ const useTheme = (
   const [theme, setTheme] = useStorage('theme', inject || 'light');
 
   useEffect(() => {
-    console.log(theme);
     document.cookie = `theme=${theme}; path=/`;
     changeTheme(theme as string);
   }, [theme]);
