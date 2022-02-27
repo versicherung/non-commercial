@@ -2,6 +2,7 @@ import { FC, useEffect } from 'react';
 import Footer from '@/components/Footer';
 import Logo from '@/assets/logo.svg';
 import Banner from './components/Banner';
+import LoginForm from './components/Form';
 import styles from './index.module.less';
 
 const Login: FC = () => {
@@ -21,6 +22,9 @@ const Login: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
+        <div>
+          <LoginForm />
+        </div>
         <div className={styles.footer}>
           <Footer />
         </div>
