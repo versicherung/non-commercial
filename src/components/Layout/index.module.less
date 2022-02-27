@@ -7,7 +7,7 @@
 }
 
 .layout-navbar {
-  position: fixed;
+  position: fixed !important;
   width: 100%;
   min-width: @layout-max-width;
   top: 0;
@@ -102,17 +102,6 @@
   }
 }
 
-.icon {
-  font-size: 18px;
-  vertical-align: text-bottom;
-}
-
-.icon-empty {
-  width: 12px;
-  height: 18px;
-  display: inline-block;
-}
-
 .layout-content {
   background-color: var(--color-fill-2);
   min-width: @layout-max-width;
@@ -125,6 +114,10 @@
   padding: 16px 20px 0px 20px;
 }
 
-.layout-breadcrumb {
-  margin-bottom: 16px;
+.spin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(100vh - @nav-size-height);
 }

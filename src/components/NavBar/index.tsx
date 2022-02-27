@@ -1,27 +1,25 @@
-/* eslint-disable @next/next/no-img-element */
 import { FC } from 'react';
+import { useRecoilState } from 'recoil';
 import { Tooltip, Dropdown, Avatar, Menu } from '@arco-design/web-react';
 import {
   IconSunFill,
   IconMoonFill,
   IconPoweroff,
 } from '@arco-design/web-react/icon';
+import { themeState } from '@/store';
 import Logo from '@/assets/logo.svg';
-import avatarImg from '@/assets/avatar.jpg';
-import { useGlobalContext } from '@/ctx';
-
 import IconButton from './components/IconButton';
 
 import styles from './index.module.less';
 
-const NavBar: FC = () => {
-  const { theme, setTheme } = useGlobalContext();
+const Navbar: FC = () => {
+  const [theme, setTheme] = useRecoilState(themeState);
 
   const droplist = (
     <Menu>
       <Menu.Item key="logout">
         <IconPoweroff className={styles['dropdown-icon']} />
-        退出系统
+        退出登录
       </Menu.Item>
     </Menu>
   );
@@ -34,23 +32,23 @@ const NavBar: FC = () => {
           <div className={styles['logo-name']}>商非出单系统</div>
         </div>
       </div>
+
       <ul className={styles.right}>
         <li>
-          <Tooltip
-            content={
-              theme === 'light' ? '点击切换为暗黑模式' : '点击切换为亮色模式'
-            }
-          >
+          <Tooltip>
             <IconButton
-              icon={theme !== 'dark' ? <IconMoonFill /> : <IconSunFill />}
-              onClick={() => setTheme?.(theme === 'light' ? 'dark' : 'light')}
+              icon={theme === 'light' ? <IconMoonFill /> : <IconSunFill />}
+              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
             />
           </Tooltip>
         </li>
         <li>
           <Dropdown droplist={droplist} position="br">
             <Avatar size={32} style={{ cursor: 'pointer' }}>
-              <img src={avatarImg.src} alt="avatar" />
+              <img
+                alt="avatar"
+                src="https://tse3-mm.cn.bing.net/th/id/OIP-C.O_zY6CYuQs_o0huiSCzjtAAAAA?pid=ImgDet&rs=1"
+              />
             </Avatar>
           </Dropdown>
         </li>
@@ -59,4 +57,4 @@ const NavBar: FC = () => {
   );
 };
 
-export default NavBar;
+export default Navbar;

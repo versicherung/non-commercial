@@ -1,8 +1,8 @@
-import { ForwardRefRenderFunction, forwardRef, Ref, ReactNode } from 'react';
-import { Button } from '@arco-design/web-react';
+import { FC, ReactNode } from 'react';
 import cs from 'classnames';
+import { Button } from '@arco-design/web-react';
 
-import styles from './index.module.less';
+import styles from './icon-button.module.less';
 
 interface Props {
   icon: ReactNode;
@@ -10,15 +10,11 @@ interface Props {
   onClick: () => void;
 }
 
-const IconButton: ForwardRefRenderFunction<Ref<unknown>, Props> = (
-  props,
-  ref
-) => {
+const IconButton: FC<Props> = (props) => {
   const { icon, className, ...rest } = props;
 
   return (
     <Button
-      ref={ref}
       icon={icon}
       shape="circle"
       type="secondary"
@@ -28,4 +24,4 @@ const IconButton: ForwardRefRenderFunction<Ref<unknown>, Props> = (
   );
 };
 
-export default forwardRef(IconButton);
+export default IconButton;

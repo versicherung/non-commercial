@@ -1,6 +1,7 @@
 /**
  * { data-analysis:  ['read', 'write'] }
  */
+
 export type UserPermission = Record<string, string[]>;
 
 type Auth = {
@@ -9,7 +10,7 @@ type Auth = {
 };
 
 export interface AuthParams {
-  requiredPermissions?: Auth[];
+  requiredPermissions?: Array<Auth>;
   oneOfPerm?: boolean;
 }
 
@@ -41,20 +42,16 @@ const auth = (params: Auth, userPermission: UserPermission) => {
   return judge(actions, perm);
 };
 
-const authByArray = (params: AuthParams, userPermission: UserPermission) => {
+export default (params: AuthParams, userPermission: UserPermission) => {
   const { requiredPermissions, oneOfPerm } = params;
   if (Array.isArray(requiredPermissions) && requiredPermissions.length) {
     let count = 0;
-    requiredPermissions.forEach((rp) => {
+    for (const rp of requiredPermissions) {
       if (auth(rp, userPermission)) {
         count++;
       }
-    });
-
-    return oneOfPerm ? count > 0 : count == requiredPermissions.length;
+    }
+    return oneOfPerm ? count > 0 : count === requiredPermissions.length;
   }
-
   return true;
 };
-
-export default authByArray;
