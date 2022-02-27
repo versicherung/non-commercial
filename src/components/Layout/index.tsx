@@ -1,9 +1,16 @@
-import { FC, Suspense, useMemo, useState, useEffect } from 'react';
+import { FC, Suspense, useMemo, useState, useEffect, ReactNode } from 'react';
 import { useRecoilValue } from 'recoil';
-import { Routes, Route } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  Link,
+} from 'react-router-dom';
 import cs from 'classnames';
 import nProgress from 'nprogress';
-import { Layout, Spin } from '@arco-design/web-react';
+import qs from 'query-string';
+import { Layout, Spin, Menu, Breadcrumb } from '@arco-design/web-react';
 import { IconMenuFold, IconMenuUnfold } from '@arco-design/web-react/icon';
 import { settingsState } from '@/store';
 import useRoute, { RouteType } from '@/router';
@@ -15,21 +22,8 @@ import styles from './index.module.less';
 const Sider = Layout.Sider;
 const Content = Layout.Content;
 
-const LoadingComponent: FC = () => {
-  useEffect(() => {
-    nProgress.start();
-
-    return () => {
-      nProgress.done();
-    };
-  });
-
-  return (
-    <div className={styles.spin}>
-      <Spin />
-    </div>
-  );
-};
+const MenuItem = Menu.Item;
+const SubMenu = Menu.SubMenu;
 
 const getFlattenRoutes = (routes: RouteType[]): RouteType[] => {
   const res: RouteType[] = [];
@@ -58,13 +52,119 @@ const getFlattenRoutes = (routes: RouteType[]): RouteType[] => {
   return res;
 };
 
+const getMenuItems = (routes: RouteType[]): ReactNode[] => {
+  function travel(_routes: RouteType[], path = ''): ReactNode[] {
+    return _routes.map((route) => {
+      let iconDom: ReactNode = <div className={styles['icon-empty']} />;
+      if (route.icon !== undefined) {
+        const Icon = route.icon;
+        iconDom = <Icon className={styles.icon} />;
+      }
+      const titleDom = (
+        <>
+          {iconDom} {route.name}
+        </>
+      );
+      const realPath =
+        route.path === ''
+          ? path
+          : `${path}${path === '' ? '' : '/'}${route.path}`;
+      if (
+        route.element &&
+        (!Array.isArray(route.children) ||
+          (Array.isArray(route.children) && !route.children.length))
+      ) {
+        return (
+          <MenuItem key={realPath}>
+            <Link to={realPath}>{titleDom}</Link>
+          </MenuItem>
+        );
+      }
+
+      if (Array.isArray(route.children) && route.children.length) {
+        return (
+          <SubMenu key={realPath} title={titleDom}>
+            {travel(route.children, realPath)}
+          </SubMenu>
+        );
+      }
+    });
+  }
+
+  const nodes = travel(routes);
+  return nodes;
+};
+
+const getBreadcrumb = (routes: RouteType[], paths: string[]) => {
+  const res: ReactNode[] = [];
+
+  function travel(_routes: RouteType[], idx = 0) {
+    const route = _routes.find((item) => item.path === paths[idx]);
+
+    let iconDom: ReactNode = <div className={styles['icon-empty']} />;
+    if (route?.icon !== undefined && res.length === 0) {
+      const Icon = route.icon;
+      iconDom = <Icon className={styles.icon} />;
+      res.push(iconDom);
+    } else {
+      res.push(route?.name);
+    }
+
+    if (Array.isArray(route?.children) && route?.children.length) {
+      travel(route.children, idx + 1);
+    }
+  }
+
+  travel(routes);
+
+  return res.length === 1 ? [] : res;
+};
+
+const LoadingComponent: FC = () => {
+  useEffect(() => {
+    nProgress.start();
+
+    return () => {
+      nProgress.done();
+    };
+  });
+
+  return (
+    <div className={styles.spin}>
+      <Spin />
+    </div>
+  );
+};
+
 const PageLayout: FC = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   const settings = useRecoilValue(settingsState);
 
-  const [routes] = useRoute({});
+  const location = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (location.pathname === '/') {
+      navigate('/welcome');
+    }
+  }, [location.pathname, navigate]);
+
+  const [routes, defaultRoute] = useRoute({});
+  const currentComponent = qs.parseUrl(location.pathname).url.slice(1);
+  const paths = (currentComponent || defaultRoute).split('/');
+  const defaultOpenKeys = paths.slice(0, paths.length - 1);
+
   const flattenRoutes = useMemo(() => getFlattenRoutes(routes), [routes]);
+  const menus = useMemo(() => getMenuItems(routes), [routes]);
+  const breadcrumb = useMemo(
+    () => getBreadcrumb(routes, paths),
+    [routes, paths]
+  );
+
+  const [selectedKeys, setSelectedKeys] = useState([
+    currentComponent || defaultRoute,
+  ]);
+  const [openKeys, setOpenKeys] = useState(defaultOpenKeys);
 
   const navbarHeight = 60;
   const menuWidth = collapsed ? 48 : settings.menuWidth;
@@ -95,7 +195,19 @@ const PageLayout: FC = () => {
             breakpoint="xl"
             style={paddingTop}
           >
-            <div className={styles['menu-wrapper']}></div>
+            <div className={styles['menu-wrapper']}>
+              <Menu
+                collapse={collapsed}
+                onClickMenuItem={(key) => setSelectedKeys([key])}
+                selectedKeys={selectedKeys}
+                openKeys={openKeys}
+                onClickSubMenu={(_, openKeys) => {
+                  setOpenKeys(openKeys);
+                }}
+              >
+                {menus}
+              </Menu>
+            </div>
             <div
               className={styles['collapse-btn']}
               onClick={() => setCollapsed((state) => !state)}
@@ -107,6 +219,15 @@ const PageLayout: FC = () => {
 
         <Layout className={styles['layout-content']} style={paddingStyle}>
           <div className={styles['layout-content-wrapper']}>
+            {!!breadcrumb.length && (
+              <div className={styles['layout-breadcrumb']}>
+                <Breadcrumb>
+                  {breadcrumb.map((node, index) => (
+                    <Breadcrumb.Item key={index}>{node}</Breadcrumb.Item>
+                  ))}
+                </Breadcrumb>
+              </div>
+            )}
             <Content>
               <Routes>
                 {flattenRoutes.map((item, index) => {

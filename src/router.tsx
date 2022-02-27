@@ -1,4 +1,4 @@
-import { ReactNode, lazy, useMemo, useCallback } from 'react';
+import { lazy, useMemo, useCallback, FC } from 'react';
 import { RouteObject } from 'react-router-dom';
 import { IconFire } from '@arco-design/web-react/icon';
 import auth, { AuthParams, UserPermission } from './utils/authentication';
@@ -9,17 +9,17 @@ export type RouteType = AuthParams &
     name: string;
     breadcrumb?: boolean;
     children?: RouteType[];
-    icon?: ReactNode;
+    icon?: FC<any>;
   };
 
 export const routes: RouteType[] = [
   {
     name: '欢迎',
     path: 'welcome',
-    icon: <IconFire />,
+    icon: IconFire,
     children: [
       {
-        path: '',
+        path: 'example',
         name: 'Welcome',
         element: lazy(() => import('@/pages/welcome')),
       },
