@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { useRecoilState } from 'recoil';
 import { Tooltip, Dropdown, Avatar, Menu } from '@arco-design/web-react';
 import {
   IconSunFill,

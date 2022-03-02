@@ -1,0 +1,32 @@
+{
+  "globals": {
+    "atom": true,
+    "Link": true,
+    "Navigate": true,
+    "NavLink": true,
+    "Outlet": true,
+    "Route": true,
+    "Routes": true,
+    "useCallback": true,
+    "useContext": true,
+    "useEffect": true,
+    "useHref": true,
+    "useInRouterContext": true,
+    "useLinkClickHandler": true,
+    "useLocation": true,
+    "useMemo": true,
+    "useNavigate": true,
+    "useNavigationType": true,
+    "useOutlet": true,
+    "useOutletContext": true,
+    "useParams": true,
+    "useRecoilState": true,
+    "useRecoilValue": true,
+    "useReducer": true,
+    "useRef": true,
+    "useResolvedPath": true,
+    "useRoutes": true,
+    "useSearchParams": true,
+    "useState": true
+  }
+}

@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 const useStorage = (
   key: string,
   defaultValue?: string

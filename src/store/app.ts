@@ -1,5 +1,3 @@
-import { atom } from 'recoil';
-
 const changeTheme = (theme: string) => {
   if (theme === 'dark') {
     document.body.setAttribute('arco-theme', 'dark');

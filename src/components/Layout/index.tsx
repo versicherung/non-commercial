@@ -1,12 +1,4 @@
-import { FC, Suspense, useMemo, useState, useEffect, ReactNode } from 'react';
-import { useRecoilValue } from 'recoil';
-import {
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-  Link,
-} from 'react-router-dom';
+import { FC, Suspense, ReactNode } from 'react';
 import cs from 'classnames';
 import nProgress from 'nprogress';
 import qs from 'query-string';
@@ -145,7 +137,7 @@ const PageLayout: FC = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (location.pathname === '/') {
-      navigate('/welcome');
+      navigate('/welcome/example');
     }
   }, [location.pathname, navigate]);
 

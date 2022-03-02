@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import AutoImport from 'unplugin-auto-import/vite';
 import svgrPlugin from '@arco-plugins/vite-plugin-svgr';
 import vitePluginForArco from '@arco-plugins/vite-react';
 
@@ -10,6 +11,17 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    AutoImport({
+      include: [/\.[tj]sx?$/],
+      imports: [
+        'react',
+        'react-router-dom',
+        { recoil: ['atom', 'useRecoilValue', 'useRecoilState'] },
+      ],
+      eslintrc: {
+        enabled: true,
+      },
+    }),
     svgrPlugin({
       svgrOptions: {},
     }),

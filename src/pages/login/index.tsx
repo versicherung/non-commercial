@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import Footer from '@/components/Footer';
 import Logo from '@/assets/logo.svg';
 import Banner from './components/Banner';

@@ -8,6 +8,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
+    './.eslintrc-auto-import.json',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -18,5 +19,8 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', '@typescript-eslint'],
-  rules: { 'react/react-in-jsx-scope': 0 },
+  rules: {
+    'react/react-in-jsx-scope': 0,
+    'react/jsx-no-undef': ['error', { allowGlobals: true }],
+  },
 };
