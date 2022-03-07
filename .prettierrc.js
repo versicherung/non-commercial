@@ -1,7 +1,8 @@
 module.exports = {
-  semi: true,
-  singleQuote: true,
-  jsxSingleQuote: false,
-  useTabs: false,
   tabWidth: 2,
+  semi: true,
+  printWidth: 80,
+  singleQuote: true,
+  quoteProps: 'consistent',
+  htmlWhitespaceSensitivity: 'strict',
 };

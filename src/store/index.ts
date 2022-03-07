@@ -1,2 +1,7 @@
-export { themeState } from './app';
-export { settingsState } from './settings';
+import useAppStore from './modules/app';
+
+const pinia = createPinia();
+
+export { useAppStore };
+
+export default pinia;
